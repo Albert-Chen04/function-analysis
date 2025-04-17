@@ -1,0 +1,253 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[UTF8]{ctex}                    % 中文支持
+\usepackage{geometry}                      % 页面布局
+\usepackage{amsmath,amssymb,amsthm}        % 数学符号与定理
+\usepackage{mathtools,bm}                  % 高级数学工具
+\usepackage{graphicx}                      % 图片插入
+\usepackage{booktabs}                      % 三线表
+\usepackage[numbers,sort&compress]{natbib} % 参考文献
+\usepackage{caption}                       % 图表标题
+\usepackage{enumitem}                      % 列表环境
+
+% ========== 页面布局 ==========
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\setlength{\parskip}{0.5em}                % 段落间距
+\renewcommand{\baselinestretch}{1.2}       % 行距
+
+% ========== 数学命令 ==========
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}  % 微分符号
+\newcommand{\R}{\mathbb{R}}                % 实数集
+\newcommand{\C}{\mathbb{C}}                % 复数集
+\newcommand{\Z}{\mathbb{Z}}                % 整数集
+\newcommand{\N}{\mathbb{N}}                % 自然数集
+\DeclareMathOperator{\supp}{supp}           % 支持集符号
+
+% ========== 超链接 & PDF 书签处理 ==========
+\usepackage[colorlinks, linkcolor=black, unicode]{hyperref} % 修改 linkcolor 为 black
+\pdfstringdefDisableCommands{%
+	\def\R{R}%
+	\def\C{C}%
+	\def\Z{Z}%
+	\def\N{N}%
+	\def\diff{d}%
+}
+
+
+% ========== 定理环境 ==========
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{示例}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注记}
+
+% ========== 文档信息 ==========
+\title{常见函数空间及其关系}
+\author{陈柏均}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	
+	\begin{abstract}
+		本文系统介绍了 Lebesgue 空间 $L^p$、连续可微空间 $C^n$，光滑及紧支撑空间 $C^\infty$、$C_c^\infty$，速降函数空间 $\mathcal S$，以及 Sobolev 空间 $W^{k,p}$ 的定义与相互嵌入，还增加了测试函数空间的基本概念。
+	\end{abstract}
+	
+	\tableofcontents
+	\clearpage
+	
+	\section{\texorpdfstring{$L^p$}{Lp} 空间与 \texorpdfstring{$L^\infty$}{L∞} 空间}
+	
+	\begin{definition}[$L^p$ 空间]
+		设 $(X,\mathcal F,\mu)$ 为测度空间，当 $1\le p<\infty$ 时，定义
+		\[
+		L^p(X)
+		=\Bigl\{f:X\to\C\mid f\text{ 可测且 }\int_X|f|^p\,\diff\mu<\infty\Bigr\}/\sim,
+		\]
+		其中 $\sim$ 表示几乎处处相等。范数为
+		\[
+		\|f\|_{L^p}
+		=\Bigl(\int_X|f|^p\,\diff\mu\Bigr)^{1/p}.
+		\]
+	\end{definition}
+	
+	\begin{definition}[$L^\infty$ 空间]
+		$L^\infty(X)$ 定义为本质有界函数族的等价类：
+		\[
+		L^\infty(X)
+		=\Bigl\{f:X\to\C:\exists M<\infty,\;|f(x)|\le M\ \text{几乎处处}\Bigr\}/\sim,
+		\]
+		其范数为
+		\[
+		\|f\|_{L^\infty}
+		=\inf\{M:|f(x)|\le M\ \text{a.e.}\}.
+		\]
+	\end{definition}
+	
+	\section{\texorpdfstring{$C^n(\Omega)$}{Cn} 与 \texorpdfstring{$C^\infty(\Omega)$}{C∞}}
+	
+	\begin{definition}
+		令 $\Omega\subset\R^d$ 为开集，则
+		\[
+		C^n(\Omega)
+		=\{f:\Omega\to\R:\text{$f$ 具有连续的 $0,1,\dots,n$ 阶偏导数}\},
+		\]
+		\[
+		C^\infty(\Omega)
+		=\bigcap_{n=0}^\infty C^n(\Omega).
+		\]
+	\end{definition}
+	
+	在有界域 $\Omega$ 上，任意连续函数必有界，从而
+	\[
+	C^n(\Omega)\subset L^p(\Omega),\quad 1\le p\le\infty.
+	\]
+	
+	\section{解析函数}
+	
+	\begin{definition}
+		若 $f:\Omega\to\R$ 在开集 $\Omega\subset\R^n$ 上可微无穷次，且任取 $x_0\in\Omega$，函数 $f$ 在 $x_0$ 的泰勒级数收敛并与 $f$ 一致，则称 $f$ 为解析函数。
+	\end{definition}
+	
+	所有解析函数构成的集合记作 $C^\omega(\Omega)$，有包含关系：
+	\[
+	C^\omega(\Omega)\subsetneq C^\infty(\Omega).
+	\]
+	这个包含是严格的。例如 bump 函数
+	\[
+	\varphi(x)=
+	\begin{cases}
+		\exp\left(-\frac{1}{1-x^2}\right), & |x|<1, \\
+		0, & |x|\ge 1,
+	\end{cases}
+	\]
+	是光滑函数，但不是解析函数，因为其在 $x=\pm 1$ 附近所有导数虽存在，但泰勒展开恒为 0，与函数本身不一致。
+	
+	在拓扑意义下，$C^\omega(\Omega)$ 在 $C^\infty(\Omega)$ 中并不稠密。紧支撑光滑函数 $C_c^\infty(\Omega)$ 的存在正是为了替代解析函数在分布论中的不足，因为解析函数不允许有紧支撑，而 $C_c^\infty$ 中的 bump 函数是构造近似单位、分布作用的重要工具。
+	
+	\section{\texorpdfstring{$C_c^\infty(\Omega)$}{Cc∞}紧支撑光滑函数}
+	
+	\begin{definition}
+		定义
+		\[
+		\mathcal D(\Omega)=	C_c^\infty(\Omega)
+		=\{\varphi\in C^\infty(\Omega):\supp\varphi\subset K,\ K\subset\subset\Omega\},
+		\]
+		
+		
+		即所有支持集紧于 $\Omega$ 的光滑函数，称为测试函数空间。其在分布与弱解理论中用于构造逼近序列及光滑化操作。
+	\end{definition}
+	
+\section{速降函数空间 $\mathcal S$}
+
+\begin{definition}[Schwartz 空间]
+	Schwartz 空间（速降函数空间）是指所有函数及其导数在无穷远处衰减得比任意多项式还快的光滑函数组成的集合：
+	\[
+	\mathcal S(\R^n)
+	=\Bigl\{f\in C^\infty(\R^n):
+	\forall\alpha,\beta\in\N^n,\;\sup_{x\in\R^n}|x^\alpha D^\beta f(x)|<\infty\Bigr\}.
+	\]
+\end{definition}
+
+
+由于紧支撑光滑函数在无穷远处恒为零，可得：
+\[
+\mathcal S_c(\R^n)
+=\mathcal S(\R^n)\cap C_c^\infty(\R^n)
+=C_c^\infty(\R^n).
+\]
+
+
+
+\section{Sobolev 空间 $W^{k,p}$}
+
+\begin{definition}
+对开域 $\Omega\subset\R^n$，$k\in\N,1\le p\le\infty$，定义
+\[
+W^{k,p}(\Omega)
+=\{u\in L^p(\Omega):D^\alpha u\in L^p(\Omega),\ |\alpha|\le k\},
+\]
+其范数为
+\[
+\|u\|_{W^{k,p}}
+=\sum_{|\alpha|\le k}\|D^\alpha u\|_{L^p}.
+\]
+\end{definition}
+
+Sobolev 空间是弱导数存在的函数空间，适合于研究 PDE 中的弱解。通过分布导数的观点，可对不可微但具有积分意义的函数进行分析。
+
+\section{Sobolev 嵌入与分布视角}
+
+Sobolev 嵌入定理刻画了 $W^{k,p}(\Omega)$ 中函数的正则性与连续性。若 $\Omega\subset\R^n$ 为有界光滑域，有经典结论如下：
+
+\begin{theorem}[Sobolev 嵌入定理]
+设 $1\le p<n$，若 $k>\frac{n}{p}$，则存在连续嵌入
+\[
+W^{k,p}(\Omega)\hookrightarrow C^0(\bar\Omega).
+\]
+\end{theorem}
+
+此处的“嵌入”表示存在连续映射，故 $W^{k,p}(\Omega)$ 中的函数实际上具有某种形式的连续性，甚至可微性。
+
+为研究弱导数的存在性，我们引入分布的概念。分布是 $C_c^\infty$ 上的连续线性泛函，记作 $\mathcal D'(\Omega)$。
+
+\begin{definition}[分布]
+若 $T:C_c^\infty(\Omega)\to\R$ 是线性且满足局部有界性条件，则 $T$ 称为定义在 $\Omega$ 上的一个分布。
+\end{definition}
+
+函数 $f\in L^1_{\text{loc}}(\Omega)$ 可定义为分布：
+\[
+T_f(\varphi):=\int_\Omega f(x)\varphi(x)\diff x,\quad\forall\varphi\in C_c^\infty(\Omega).
+\]
+
+这样，Sobolev 空间中的弱导数可视为分布导数，使得不可导的函数也能进入分析范畴。
+
+\section{测度有限 vs.\ 测度无穷：包含与稠密}
+
+\subsection{测度有限情形 ($\mu(X)<\infty$)}
+
+在有限测度空间中，若 $1\leq p<q\le\infty$，则
+\[
+L^q(X)\subset L^p(X),\quad
+\|f\|_{L^p}\le\|f\|_{L^q}\,\mu(X)^{\tfrac1p-\tfrac1q}.
+\]
+对于有界开域 $\Omega$，还具有
+\[
+C^n(\Omega)\subset L^p(\Omega),\quad
+C^\infty(\Omega)\subset L^p(\Omega),\quad
+C_c^\infty(\Omega)\subset L^p(\Omega),
+\]
+且 $C_c^\infty(\Omega)$ 在 $L^p(\Omega)$ 与 $W^{k,p}(\Omega)$ 下稠密。
+
+\subsection{测度无穷情形 ($\mu(X)=\infty$)}
+
+在无穷测度空间中，一般没有
+\[
+L^q(X)\subset L^p(X)\quad\text{或}\quad L^p(X)\subset L^q(X),
+\]
+因此需引入衰减或紧支撑以确保归属：
+
+紧支撑光滑函数满足
+\[
+C_c^\infty(\Omega)\subset L^p(\Omega),\quad 1\le p<\infty.
+\]
+
+速降函数空间则满足
+\[
+\mathcal S(\R^n)\subset \bigcap_{1\le p\le\infty}L^p(\R^n),
+\]
+并在傅里叶分析与广义函数理论中具有基础地位。
+
+\begin{thebibliography}{9}
+\bibitem{Adams1975} R. A. Adams, \textit{Sobolev Spaces}, Academic Press, 1975.
+\bibitem{Evans1998} L. C. Evans, \textit{Partial Differential Equations}, AMS, 1998.
+\bibitem{Folland1999} G. B. Folland, \textit{Real Analysis}, Wiley, 1999.
+\bibitem{Rudin1987} W. Rudin, \textit{Real and Complex Analysis}, McGraw-Hill, 1987.
+\end{thebibliography}
+
+\end{document}
